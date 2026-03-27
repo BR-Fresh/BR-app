@@ -1,53 +1,93 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
 import { Platform } from 'react-native';
-
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    text: '#1C1C18',
+    background: '#FCF9F3',
+    tint: '#005129',
+    icon: '#707A70',
+    tabIconDefault: '#707A70',
+    tabIconSelected: '#005129',
+    
+    // Brand Palette from prompt.txt
+    primary: '#005129',
+    onPrimary: '#ffffff',
+    primaryContainer: '#1A6B3C',
+    onPrimaryContainer: '#9AE9AE',
+    
+    secondary: '#006E1C',
+    onSecondary: '#ffffff',
+    secondaryContainer: '#91F78E',
+    onSecondaryContainer: '#00731E',
+    
+    tertiary: '#005047',
+    onTertiary: '#ffffff',
+    tertiaryContainer: '#006A5F',
+    onTertiaryContainer: '#82EAD9',
+    
+    surface: '#FCF9F3',
+    onSurface: '#1C1C18',
+    surfaceVariant: '#E5E2DC',
+    onSurfaceVariant: '#404940',
+    
+    surfaceContainerLow: '#F6F3ED',
+    surfaceContainer: '#F0EEE8',
+    surfaceContainerHigh: '#EBE8E2',
+    surfaceContainerHighest: '#E5E2DC',
+    surfaceContainerLowest: '#FFFFFF',
+    primaryFixed: '#A5F4B8',
+    primaryFixedDim: '#89D89E',
+    
+    outline: '#707A70',
+    outlineVariant: '#BFC9BE',
+    
+    error: '#BA1A1A',
+    onError: '#ffffff',
+    errorContainer: '#FFDAD6',
+    onErrorContainer: '#93000A',
+    
+    inverseSurface: '#31312D',
+    inverseOnSurface: '#F3F0EA',
+    inversePrimary: '#89D89E',
   },
   dark: {
     text: '#ECEDEE',
     background: '#151718',
-    tint: tintColorDark,
+    tint: '#89D89E',
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    tabIconSelected: '#89D89E',
+    
+    primary: '#89D89E',
+    onPrimary: '#00391A',
+    primaryContainer: '#005229',
+    onPrimaryContainer: '#A5F4B8',
+    
+    secondary: '#78DC77',
+    onSecondary: '#00390A',
+    secondaryContainer: '#005313',
+    onSecondaryContainer: '#94F990',
+    
+    surface: '#1C1C18',
+    onSurface: '#E5E2DC',
+    surfaceVariant: '#404940',
+    onSurfaceVariant: '#BFC9BE',
+    
+    surfaceContainerLow: '#1C1C18',
+    surfaceContainer: '#31312D',
+    surfaceContainerHigh: '#3C3C38',
+    surfaceContainerHighest: '#474743',
+    surfaceContainerLowest: '#000000',
+    primaryFixed: '#A5F4B8',
   },
 };
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});
+
+export const Fonts = {
+  headline: 'Plus Jakarta Sans',
+  body: 'Inter',
+  label: 'Inter',
+  mono: Platform.select({ ios: 'Courier', android: 'monospace', default: 'monospace' }),
+  rounded: Platform.select({ ios: 'Arial Rounded MT Bold', default: 'normal' }),
+};
+

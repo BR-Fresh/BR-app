@@ -13,29 +13,49 @@ type IconSymbolName = keyof typeof MAPPING;
  * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
  * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
  */
-const MAPPING = {
+const MAPPING: Record<string, ComponentProps<typeof MaterialIcons>['name']> = {
   'house.fill': 'home',
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
-} as IconMapping;
+  'location_on': 'location-on',
+  'shopping_cart': 'shopping-cart',
+  'shopping_bag': 'shopping-bag',
+  'search': 'search',
+  'eco': 'eco',
+  'shopping_basket': 'shopping-basket',
+  'mic': 'mic',
+  'water_drop': 'opacity',
+  'nutrition': 'restaurant',
+  'cookie': 'cookie',
+  'local_cafe': 'local-cafe',
+  'cleaning_services': 'cleaning-services',
+  'schedule': 'schedule',
+  'arrow_back': 'arrow-back',
+  'add': 'add',
+  'remove': 'remove',
+  'sell': 'sell',
+  'edit': 'edit',
+  'person': 'person',
+  'home': 'home',
+  'star': 'star',
+  'shopping_bag_filled': 'shopping-bag',
+  'close': 'close',
+};
 
-/**
- * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
- */
 export function IconSymbol({
   name,
   size = 24,
   color,
   style,
 }: {
-  name: IconSymbolName;
+  name: string;
   size?: number;
-  color: string | OpaqueColorValue;
+  color?: string | OpaqueColorValue;
   style?: StyleProp<TextStyle>;
-  weight?: SymbolWeight;
 }) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+  const iconName = MAPPING[name] || (name as any);
+  return <MaterialIcons color={color} size={size} name={iconName} style={style} />;
 }
+
+

@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { router, useLocalSearchParams } from 'expo-router';
+import { ProductCard } from '../../components/product-card';
 
 export default function StoreScreen() {
   const { id } = useLocalSearchParams();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <IconSymbol name="arrow_back" size={24} color={Colors.light.onSurface} />
@@ -58,27 +60,16 @@ export default function StoreScreen() {
         {/* Product Grid */}
         <View style={styles.productGrid}>
            {[
-             { name: 'Amul Taaza Milk', size: '500ml', price: '30', uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' },
-             { name: 'Organic Tomatoes', size: '500g', price: '45', uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBJzK_4y6b-ARMdi7fyNgPBfE7OHSx_IeB_bCQGXK3Dm17bJMT-2ABOUzKFq5G3YklsZJUrQyJgNayBSzv7Kk4PaP4cEZdV1K3qDdMNf20lQTODEfwHHxNks2_JNUD2m3W5QQ0nMXBJuNkD4rAK-L_0HKcFwqgrURngCinWAQEtjYOlUZ71mwV9X3Z4SLayPA6VTRodn7N7IhLT4jEH-Ue9fgyuDYHL46blho_MlgYcbWXv77banvZ4HVPnKUOd9qki4RReyyN9t6o' },
-             { name: 'Mother Dairy Ghee', size: '1kg', price: '640', uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBSZp-G1_gJd3u3U7Yy9S_6_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_S_q_v0' },
-             { name: 'Basmati Rice', size: '5kg', price: '550', uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBSZp-G1_gJd3u3U7Yy9S_6_q_S_q_S_q_S_q_A-z1_v0' },
-           ].map((prod, i) => (
-             <TouchableOpacity key={i} style={styles.productCard} onPress={() => router.push(`/product/${i}`)}>
-               <View style={styles.productImageBg}>
-                 <Image source={{ uri: prod.uri }} style={styles.productImage} />
-               </View>
-               <View style={styles.productInfo}>
-                 <Text style={styles.productName}>{prod.name}</Text>
-                 <Text style={styles.productSize}>{prod.size}</Text>
-                 <View style={styles.productPriceRow}>
-                    <Text style={styles.productPrice}>₹{prod.price}</Text>
-                    <TouchableOpacity style={styles.addButton}>
-                        <IconSymbol name="add" size={14} color={Colors.light.onSecondary} />
-                        <Text style={styles.addButtonText}>Add</Text>
-                    </TouchableOpacity>
-                 </View>
-               </View>
-             </TouchableOpacity>
+             { name: 'Amul Taaza Milk', size: '500ml', price: '30' },
+             { name: 'Organic Tomatoes', size: '500g', price: '45' },
+             { name: 'Mother Dairy Ghee', size: '1kg', price: '640' },
+             { name: 'Basmati Rice', size: '5kg', price: '550' },
+           ].map((prod: any, i) => (
+             <ProductCard 
+               key={i} 
+               product={prod} 
+               onPress={() => router.push('/product/1')} 
+             />
            ))}
         </View>
       </ScrollView>
@@ -100,7 +91,7 @@ const styles = StyleSheet.create({
   storeName: { fontFamily: Fonts.headline, fontSize: 18, fontWeight: '800', color: Colors.light.onSurface },
   storeAddress: { fontSize: 12, color: Colors.light.onSurfaceVariant },
   cartButton: { padding: 8 },
-  scrollContent: { paddingBottom: 40 },
+  scrollContent: { paddingBottom: 100 },
   heroSection: { height: 240, position: 'relative' },
   heroImage: { width: '100%', height: '100%', resizeMode: 'cover' },
   heroOverlay: { 
@@ -155,33 +146,34 @@ const styles = StyleSheet.create({
     gap: 16 
   },
   productCard: { 
-    width: '47.4%', 
+    flex: 1,
+    minWidth: '30%', 
     backgroundColor: Colors.light.surfaceContainerLowest, 
-    borderRadius: 20, 
-    padding: 12,
+    borderRadius: 16, 
+    padding: 8,
     borderWidth: 1,
     borderColor: Colors.light.outlineVariant + '33'
   },
   productImageBg: { 
-    height: 120, 
+    aspectRatio: 1, 
     backgroundColor: Colors.light.surfaceContainerLow, 
     borderRadius: 16, 
     marginBottom: 12,
     overflow: 'hidden'
   },
-  productImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+  productImage: { width: '100%', height: '100%', resizeMode: 'contain' },
   productInfo: { gap: 4 },
-  productName: { fontFamily: Fonts.headline, fontWeight: '700', fontSize: 14, color: Colors.light.onSurface },
+  productName: { fontFamily: Fonts.headline, fontWeight: '700', fontSize: 12, color: Colors.light.onSurface },
   productSize: { fontSize: 10, color: Colors.light.onSurfaceVariant },
   productPriceRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 },
-  productPrice: { fontFamily: Fonts.headline, fontSize: 16, fontWeight: '700', color: Colors.light.primary },
+  productPrice: { fontFamily: Fonts.headline, fontSize: 14, fontWeight: '700', color: Colors.light.primary },
   addButton: { 
     backgroundColor: Colors.light.secondary, 
     flexDirection: 'row', 
     alignItems: 'center', 
     paddingHorizontal: 8, 
-    paddingVertical: 6, 
-    borderRadius: 10 
+    paddingVertical: 4, 
+    borderRadius: 8 
   },
-  addButtonText: { color: 'white', fontSize: 12, fontWeight: '700', marginLeft: 4 }
+  addButtonText: { color: 'white', fontSize: 11, fontWeight: '700', marginLeft: 4 }
 });

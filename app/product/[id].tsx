@@ -23,7 +23,7 @@ export default function ProductDetailScreen() {
         <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: 120 + insets.bottom }]}>
           <View style={styles.imageSection}>
             <Image 
-              source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' }}
+              source={require('../../assets/image/logo.png')} 
               style={styles.productImage}
             />
           </View>
@@ -66,7 +66,12 @@ export default function ProductDetailScreen() {
                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.relatedRow}>
                   {[1, 2, 3].map((_, i) => (
                     <View key={i} style={styles.relatedCard}>
-                      <View style={styles.relatedImageBg} />
+                      <View style={styles.relatedImageBg}>
+                         <Image 
+                           source={require('../../assets/image/logo.png')} 
+                           style={{ width: '100%', height: '100%', resizeMode: 'contain' }} 
+                         />
+                      </View>
                       <Text style={styles.relatedName}>Amul Gold</Text>
                       <Text style={styles.relatedPrice}>₹35</Text>
                     </View>
@@ -108,7 +113,7 @@ const styles = StyleSheet.create({
   spacer: { width: 40 },
   scrollContent: { paddingBottom: 40 },
   imageSection: { 
-    height: 320, 
+    aspectRatio: 1, 
     backgroundColor: Colors.light.surfaceContainerLow, 
     alignItems: 'center', 
     justifyContent: 'center',

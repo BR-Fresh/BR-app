@@ -34,28 +34,12 @@ export default function SplashScreen() {
       
       <Animated.View style={[styles.content, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}>
         <View style={styles.logoContainer}>
-            <View style={styles.logoBg1} />
-            <View style={styles.logoBg2} />
             <View style={styles.logoContent}>
-                <Text style={styles.logoIcon}>🍃</Text>
-                <Text style={styles.logoIconSub}>🧺</Text>
+                <Image 
+                  source={require('../assets/image/icon transparent.png')} 
+                  style={{ width: 280, height: 280, resizeMode: 'contain' }} 
+                />
             </View>
-        </View>
-
-        <View style={styles.brandInfo}>
-          <Text style={styles.brandName}>BR Fresh</Text>
-          <Text style={styles.brandSlogan}>Fresh from your neighbourhood.</Text>
-        </View>
-
-        <View style={styles.editorialGrid}>
-            <Image 
-                source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDldgPs9mq8nEMDP4taa-tMTbGuH40I0cfEvcxS-CvOY5gw-e3l_DTZxACJwDoOSR2RUVE7H6SAwYnQIdsRy7naP39kj-voNfcCienbM6zuPvI0BpLX8bC08NDADS7ODjxq2ZLnrmwchjgqtH9s7o0X5mcZlgrX0wm4-jzbmrzjzqupMCscQa4u6Jd8OzXH9VPn5Ff4_8sD4bM5SYAyqIBwz5c0jzVReRqd5nCBRs1H24PUFBaMIF96LUe0zRjpgVcbWwtfv9lGqC8' }}
-                style={[styles.editorialImage, styles.imageRotateLeft]}
-            />
-            <Image 
-                source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDfhblyNtK1ZAmC8qi9L1jSvLYRhGbTtjER5TFhSKKSVK-T9GHnEyBkrcvsPxsYk0eyxf3tACpvn8bfwraVD8XWbfbHnd4-UwjfK73OOL6dgpY7mxnCWOGayZP-z-GTvc0CwwYn8dleRoTEWGoLh1dTy9tSOfLSDic3kJs5kCpntxi1Nfj4RRtocDvKytGyZJ40Pfd2YJmWo5dJsc3LreFxiynAN_PjW7bpz6DNSRAUZLVVJL_4fdoW01FDDSz8cNyd_O0_Kw9Mfqg' }}
-                style={[styles.editorialImage, styles.imageRotateRight]}
-            />
         </View>
       </Animated.View>
 
@@ -87,8 +71,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   logoContainer: {
-    width: 128,
-    height: 128,
+    width: 200,
+    height: 200,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 32,

@@ -25,7 +25,10 @@ export default function LoginScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.flex}
       >
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScrollView 
+          contentContainerStyle={styles.scrollContent}
+          scrollEnabled={false}
+        >
           {/* Illustration Container */}
           <View style={styles.illustrationContainer}>
             <Image 
@@ -67,18 +70,18 @@ export default function LoginScreen() {
               <Text style={styles.ctaText}>Send OTP</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
 
-        {/* Footer */}
-        <View style={styles.footer}>
-          <View style={styles.footerBadge}>
-            <Text style={styles.footerText}>
-              By continuing you agree to our{' '}
-              <Text style={styles.linkText}>Terms of Service</Text> and{' '}
-              <Text style={styles.linkText}>Privacy Policy</Text>.
-            </Text>
+          {/* Footer moved inside ScrollView */}
+          <View style={styles.footer}>
+            <View style={styles.footerBadge}>
+              <Text style={styles.footerText}>
+                By continuing you agree to our{' '}
+                <Text style={styles.linkText}>Terms of Service</Text> and{' '}
+                <Text style={styles.linkText}>Privacy Policy</Text>.
+              </Text>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 32,
-    paddingTop: 48,
+    paddingTop: 32,
     alignItems: 'center',
   },
   illustrationContainer: {
@@ -105,7 +108,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.surfaceContainerLow,
     borderRadius: 24,
     overflow: 'hidden',
-    marginBottom: 40,
+    marginBottom: 24,
   },
   illustration: {
     width: '100%',
@@ -120,7 +123,7 @@ const styles = StyleSheet.create({
   headerSection: {
     width: '100%',
     alignItems: 'center',
-    marginBottom: 48,
+    marginBottom: 32,
   },
   title: {
     fontFamily: Fonts.headline,
@@ -187,9 +190,9 @@ const styles = StyleSheet.create({
     color: Colors.light.onSecondary,
   },
   footer: {
-    paddingHorizontal: 32,
-    paddingBottom: 40,
+    paddingBottom: 24,
     width: '100%',
+    marginTop: 32,
   },
   footerBadge: {
     backgroundColor: Colors.light.surfaceContainerLow + '80', // 50% opacity

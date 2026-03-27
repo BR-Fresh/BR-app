@@ -4,6 +4,8 @@ import { View, Platform, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import { useColorScheme } from '../../hooks/use-color-scheme';
+import Entypo from '@expo/vector-icons/Entypo';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -11,15 +13,15 @@ export default function TabLayout() {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#000000' }}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: '#A5F4B8',
-          tabBarInactiveTintColor: '#9DA29D',
+          tabBarActiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#888888',
           headerShown: false,
           tabBarStyle: {
-            backgroundColor: '#1A1A1A',
-            borderTopColor: '#2C2F2C',
+            backgroundColor: '#FFFFFF',
+            borderTopColor: Colors.light.outlineVariant + '33',
             elevation: 0,
             borderTopWidth: 1,
             // Fixed height - do NOT include insets.bottom
@@ -46,17 +48,8 @@ export default function TabLayout() {
           name="index"
           options={{
             title: 'Home',
-            tabBarIcon: ({ color, focused }) => (
-              <Text style={{ fontSize: 22 }}>{focused ? '🏠' : '🏡'}</Text>
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="search"
-          options={{
-            title: 'Search',
-            tabBarIcon: ({ color, focused }) => (
-              <Text style={{ fontSize: 22 }}>{focused ? '🔍' : '🔎'}</Text>
+            tabBarIcon: ({ color, size }) => (
+              <Entypo name="home" size={24} color={color} />
             ),
           }}
         />
@@ -64,8 +57,8 @@ export default function TabLayout() {
           name="orders"
           options={{
             title: 'Orders',
-            tabBarIcon: ({ color, focused }) => (
-              <Text style={{ fontSize: 22 }}>{focused ? '🛍️' : '📦'}</Text>
+            tabBarIcon: ({ color, size }) => (
+              <Entypo name="shopping-bag" size={24} color={color} />
             ),
           }}
         />
@@ -73,16 +66,12 @@ export default function TabLayout() {
           name="profile"
           options={{
             title: 'Profile',
-            tabBarIcon: ({ color, focused }) => (
-              <Text style={{ fontSize: 22 }}>{focused ? '👤' : '👥'}</Text>
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="account" size={24} color={color} />
             ),
           }}
         />
       </Tabs>
-
-      {/* This black spacer sits between the tab bar and the screen edge,
-          filling the system navigation area with pure black */}
-      <View style={{ height: insets.bottom, backgroundColor: '#000000' }} />
     </View>
   );
 }

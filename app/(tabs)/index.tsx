@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   StyleSheet, 
   View, 
@@ -7,7 +7,9 @@ import {
   TextInput, 
   Image, 
   TouchableOpacity,
-  Platform
+  Platform,
+  Modal,
+  Dimensions
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -18,8 +20,13 @@ import { ProductCard } from '../../components/product-card';
 
 import { useCart } from '../../context/cart-context';
 
+import { LocationModal } from '../../components/location-modal';
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+
 export default function HomeScreen() {
   const { itemCount } = useCart();
+  const [isLocationModalVisible, setIsLocationModalVisible] = useState(false);
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -30,9 +37,13 @@ export default function HomeScreen() {
             source={require('../../assets/image/logo tab.png')} 
             style={{ width: 32, height: 32, resizeMode: 'contain' }} 
           />
-          <TouchableOpacity style={styles.locationContainer}>
+          <TouchableOpacity 
+            style={styles.locationContainer} 
+            onPress={() => setIsLocationModalVisible(true)}
+          >
             <View style={styles.locationTitleRow}>
               <Text style={styles.locationTitle}>Sector 21</Text>
+              <IconSymbol name="chevron.down" size={14} color={Colors.light.onSurfaceVariant} />
             </View>
             <Text style={styles.locationSubText} numberOfLines={1}>Chandigarh, India</Text>
           </TouchableOpacity>
@@ -142,6 +153,12 @@ export default function HomeScreen() {
            ))}
         </View>
       </ScrollView>
+
+      {/* Location Modal */}
+      <LocationModal 
+        isVisible={isLocationModalVisible} 
+        onClose={() => setIsLocationModalVisible(false)} 
+      />
     </SafeAreaView>
   );
 }
@@ -153,31 +170,22 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingVertical: 12,
-    backgroundColor: Colors.light.background + 'CC', // 80% opacity
+    backgroundColor: Colors.light.background,
   },
   headerTop: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 8,
-  },
-  brandLogo: {
-    fontFamily: Fonts.headline,
-    fontSize: 22,
-    fontWeight: '800',
-    color: Colors.light.primaryContainer,
-    fontStyle: 'italic',
-    letterSpacing: -1,
+    gap: 12,
   },
   locationContainer: {
-    alignItems: 'flex-end',
     flex: 1,
   },
   locationTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 2,
+    gap: 6,
   },
   locationTitle: {
     fontFamily: Fonts.headline,
@@ -190,28 +198,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     color: Colors.light.onSurfaceVariant,
-  },
-  cartButton: {
-    padding: 8,
-    borderRadius: 999,
-  },
-  cartBadge: {
-    position: 'absolute',
-    top: 4,
-    right: 4,
-    backgroundColor: Colors.light.secondary,
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: Colors.light.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cartBadgeText: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: Colors.light.onSecondary,
   },
   headerDivider: {
     height: 1,
@@ -422,66 +408,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingHorizontal: 16,
     gap: 16,
-  },
-  productCard: {
-    flex: 1,
-    minWidth: '30%',
-    backgroundColor: Colors.light.surfaceContainerLowest,
-    borderRadius: 16,
-    padding: 8,
-    borderWidth: 1,
-    borderColor: Colors.light.outlineVariant + '33',
-  },
-  productImageBg: {
-    aspectRatio: 1,
-    backgroundColor: Colors.light.surfaceContainerLow,
-    borderRadius: 16,
-    overflow: 'hidden',
-    marginBottom: 12,
-  },
-  productImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  productInfo: {
-    gap: 4,
-  },
-  productName: {
-    fontFamily: Fonts.headline,
-    fontWeight: '700',
-    fontSize: 12,
-    color: Colors.light.onSurface,
-  },
-  productSize: {
-    fontSize: 10,
-    fontWeight: '600',
-    color: Colors.light.onSurfaceVariant,
-  },
-  productPriceRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  productPrice: {
-    fontFamily: Fonts.headline,
-    fontSize: 14,
-    fontWeight: '700',
-    color: Colors.light.primary,
-  },
-  addButton: {
-    backgroundColor: Colors.light.secondary,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
-  },
-  addButtonText: {
-    color: Colors.light.onSecondary,
-    fontSize: 12,
-    fontWeight: '700',
   }
 });
+
+

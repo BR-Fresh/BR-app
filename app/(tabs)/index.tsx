@@ -28,15 +28,14 @@ export default function HomeScreen() {
         <View style={styles.headerTop}>
           <Image 
             source={require('../../assets/image/logo tab.png')} 
-            style={{ width: 29, height: 29, resizeMode: 'contain' }} 
+            style={{ width: 32, height: 32, resizeMode: 'contain' }} 
           />
-          <View style={styles.locationContainer}>
-             <View style={styles.locationInner}>
-                <IconSymbol name="location_on" size={18} color={Colors.light.primary} />
-                <Text style={styles.locationText}>Sector 21, Chandigarh</Text>
-             </View>
-          </View>
-          <View style={{ width: 40 }} />
+          <TouchableOpacity style={styles.locationContainer}>
+            <View style={styles.locationTitleRow}>
+              <Text style={styles.locationTitle}>Sector 21</Text>
+            </View>
+            <Text style={styles.locationSubText} numberOfLines={1}>Chandigarh, India</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.headerDivider} />
       </View>
@@ -160,8 +159,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    marginBottom: 12,
+    paddingHorizontal: 20,
+    marginBottom: 8,
   },
   brandLogo: {
     fontFamily: Fonts.headline,
@@ -172,18 +171,25 @@ const styles = StyleSheet.create({
     letterSpacing: -1,
   },
   locationContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-end',
+    flex: 1,
   },
-  locationInner: {
+  locationTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 2,
   },
-  locationText: {
+  locationTitle: {
     fontFamily: Fonts.headline,
-    fontSize: 14,
-    fontWeight: '700',
-    color: Colors.light.primary,
+    fontSize: 16,
+    fontWeight: '800',
+    color: Colors.light.onSurface,
+  },
+  locationSubText: {
+    fontFamily: Fonts.body,
+    fontSize: 12,
+    fontWeight: '500',
+    color: Colors.light.onSurfaceVariant,
   },
   cartButton: {
     padding: 8,

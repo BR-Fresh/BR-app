@@ -34,9 +34,9 @@ function LayoutContent({ colorScheme }: { colorScheme: any }) {
   const segments = useSegments();
   
   // Hide cart bar on specific screens
-  const isCartScreen = segments[0] === 'cart';
-  const isTrackingScreen = segments[0] === 'tracking';
-  const hideCartBar = isCartScreen || isTrackingScreen;
+  const hideCartBar = segments.some(seg => 
+    ['cart', 'tracking', 'payment-process', 'search', '(auth)'].includes(seg)
+  );
 
   // If we are in tabs, the tab bar is 64px. 
   // We need to be above the tab bar AND the safe area inset bottom.

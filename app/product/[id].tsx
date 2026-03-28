@@ -5,6 +5,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { Colors, Fonts } from '../../constants/theme';
 import { useCart } from '../../context/cart-context';
+import { ProductCard } from '../../components/product-card';
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -68,17 +69,16 @@ export default function ProductDetailScreen() {
             <View style={styles.relatedSection}>
               <Text style={styles.detailsTitle}>Related Products</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.relatedRow}>
-                {[1, 2, 3].map((_, i) => (
-                  <View key={i} style={styles.relatedCard}>
-                    <View style={styles.relatedImageBg}>
-                      <Image
-                        source={require('../../assets/image/logo.png')}
-                        style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-                      />
-                    </View>
-                    <Text style={styles.relatedName}>Amul Gold</Text>
-                    <Text style={styles.relatedPrice}>₹35</Text>
-                  </View>
+                {[
+                  { id: 'rel-1', name: 'Amul Gold', size: '500ml', price: '35' },
+                  { id: 'rel-2', name: 'Amul SlimnTrim', size: '500ml', price: '28' },
+                  { id: 'rel-3', name: 'Amul Cow Milk', size: '500ml', price: '32' },
+                ].map((prod: any, i) => (
+                  <ProductCard 
+                    key={i} 
+                    product={prod} 
+                    style={{ width: 140, flex: 0, minWidth: 0 }}
+                  />
                 ))}
               </ScrollView>
             </View>
@@ -186,10 +186,6 @@ const styles = StyleSheet.create({
   detailsText: { fontSize: 15, lineHeight: 24, color: Colors.light.onSurfaceVariant, fontWeight: '500' },
   relatedSection: {},
   relatedRow: { gap: 16 },
-  relatedCard: { width: 120, gap: 8 },
-  relatedImageBg: { width: 120, height: 120, backgroundColor: Colors.light.surfaceContainerLow, borderRadius: 20 },
-  relatedName: { fontWeight: '700', fontSize: 13 },
-  relatedPrice: { fontWeight: '800', color: Colors.light.primary },
   footer: {
     position: 'absolute',
     bottom: 0,

@@ -16,6 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../constants/theme';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { router } from 'expo-router';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { ProductCard } from '../../components/product-card';
 
 import { useCart } from '../../context/cart-context';
@@ -43,7 +44,7 @@ export default function HomeScreen() {
           >
             <View style={styles.locationTitleRow}>
               <Text style={styles.locationTitle}>Sector 21</Text>
-              <IconSymbol name="chevron.down" size={14} color={Colors.light.onSurfaceVariant} />
+              <AntDesign name="down" size={14} color={Colors.light.onSurfaceVariant} />
             </View>
             <Text style={styles.locationSubText} numberOfLines={1}>Chandigarh, India</Text>
           </TouchableOpacity>
@@ -52,17 +53,17 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {/* Search Bar Section */}
+        {/* Search Bar Trigger */}
         <View style={styles.searchSection}>
-          <View style={styles.searchBar}>
+          <TouchableOpacity 
+            style={styles.searchBar} 
+            activeOpacity={0.8}
+            onPress={() => router.push('/search')}
+          >
             <IconSymbol name="search" size={20} color={Colors.light.outline} style={styles.searchIcon} />
-            <TextInput 
-              style={styles.searchInput}
-              placeholder="Search for milk, atta, rice..."
-              placeholderTextColor={Colors.light.onSurfaceVariant}
-            />
+            <Text style={styles.searchPlaceholder}>Search for milk, atta, rice...</Text>
             <IconSymbol name="mic" size={24} color={Colors.light.primary} />
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* Hero Delivery Banner */}
@@ -88,16 +89,19 @@ export default function HomeScreen() {
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryRow}>
           {[
-            { name: 'Dairy', icon: 'water_drop', color: Colors.light.primaryContainer },
-            { name: 'Vegetables', icon: 'eco', color: '#A5F4B8' },
-            { name: 'Fruits', icon: 'nutrition', color: Colors.light.surfaceContainer },
-            { name: 'Snacks', icon: 'cookie', color: Colors.light.surfaceContainer },
-            { name: 'Beverages', icon: 'local_cafe', color: Colors.light.surfaceContainer },
-            { name: 'Cleaning', icon: 'cleaning_services', color: Colors.light.surfaceContainer },
+            { name: 'Dairy', image: 'https://cdn-icons-png.flaticon.com/512/372/372971.png', color: Colors.light.primaryContainer },
+            { name: 'Vegetables', image: 'https://cdn-icons-png.flaticon.com/512/2329/2329865.png', color: '#A5F4B8' },
+            { name: 'Fruits', image: 'https://cdn-icons-png.flaticon.com/512/415/415733.png', color: Colors.light.surfaceContainer },
+            { name: 'Snacks', image: 'https://cdn-icons-png.flaticon.com/512/2553/2553691.png', color: Colors.light.surfaceContainer },
+            { name: 'Beverages', image: 'https://cdn-icons-png.flaticon.com/512/3121/3121784.png', color: Colors.light.surfaceContainer },
+            { name: 'Cleaning', image: 'https://cdn-icons-png.flaticon.com/512/2954/2954150.png', color: Colors.light.surfaceContainer },
           ].map((cat, i) => (
             <TouchableOpacity key={i} style={styles.categoryItem}>
-              <View style={[styles.categoryIconBg, { backgroundColor: cat.color + '33' }]}>
-                <IconSymbol name={cat.icon} size={32} color={Colors.light.primary} />
+              <View style={[styles.categoryIconBg, { backgroundColor: cat.color + '1A' }]}>
+                <Image 
+                  source={{ uri: cat.image }} 
+                  style={styles.categoryImage} 
+                />
               </View>
               <Text style={styles.categoryName}>{cat.name}</Text>
             </TouchableOpacity>
@@ -140,18 +144,18 @@ export default function HomeScreen() {
         <View style={styles.sectionHeader}>
            <Text style={[styles.sectionTitle, styles.italicTitle]}>Editor's Choice</Text>
         </View>
-        <View style={styles.productGrid}>
-           {[
-             { name: 'Amul Taaza Milk', size: '500ml', price: '30' },
-             { name: 'Organic Tomatoes', size: '500g', price: '45' }
-           ].map((prod: any, i) => (
-             <ProductCard 
-               key={i} 
-               product={prod} 
-               onPress={() => router.push('/product/1')} 
-             />
-           ))}
-        </View>
+         <View style={styles.productGrid}>
+            {[
+              { name: 'Amul Taaza Milk', size: '500ml', price: '30' },
+              { name: 'Organic Tomatoes', size: '500g', price: '45' }
+            ].map((prod: any, i) => (
+              <ProductCard 
+                key={i} 
+                product={prod} 
+                onPress={() => router.push('/product/1')} 
+              />
+            ))}
+         </View>
       </ScrollView>
 
       {/* Location Modal */}
@@ -228,12 +232,12 @@ const styles = StyleSheet.create({
   searchIcon: {
     marginRight: 12,
   },
-  searchInput: {
+  searchPlaceholder: {
     flex: 1,
     fontFamily: Fonts.body,
     fontSize: 15,
     fontWeight: '500',
-    color: Colors.light.onSurface,
+    color: Colors.light.onSurfaceVariant,
   },
   heroSection: {
     paddingHorizontal: 16,
@@ -310,7 +314,12 @@ const styles = StyleSheet.create({
   },
   categoryItem: {
     alignItems: 'center',
-    width: 72,
+    width: 84,
+    paddingVertical: 12,
+    borderRadius: 24,
+    backgroundColor: Colors.light.surfaceContainerLowest,
+    borderWidth: 1,
+    borderColor: Colors.light.outlineVariant + '1A',
   },
   categoryIconBg: {
     width: 64,
@@ -319,6 +328,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
+    overflow: 'hidden',
+  },
+  categoryImage: {
+    width: 48,
+    height: 48,
+    resizeMode: 'contain',
   },
   categoryName: {
     fontFamily: Fonts.body,

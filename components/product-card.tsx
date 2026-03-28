@@ -9,9 +9,10 @@ import {
 } from 'react-native';
 import { Colors, Fonts } from '../constants/theme';
 import { useCart } from '../context/cart-context';
-import { IconSymbol } from './ui/icon-symbol';
+import { AddButton } from './add-button';
 
 interface Product {
+  id?: string;
   name: string;
   size: string;
   price: string;
@@ -28,18 +29,20 @@ export function ProductCard({ product, onPress, style }: ProductCardProps) {
   const fallbackImage = require('../assets/image/logo.png');
   const { items, addItem, removeItem } = useCart();
 
-  const cartItem = items.find(item => item.id === product.name);
+  const productId = product.id || product.name;
+  const cartItem = items.find(item => item.id === productId);
   const quantity = cartItem ? cartItem.quantity : 0;
 
   const handleAdd = (e: any) => {
     e.stopPropagation();
-    addItem({ id: product.name, name: product.name, price: product.price });
+    addItem({ id: productId, name: product.name, price: product.price });
   };
 
   const handleRemove = (e: any) => {
     e.stopPropagation();
-    removeItem(product.name);
+    removeItem(productId);
   };
+
 
   return (
     <TouchableOpacity
@@ -59,28 +62,11 @@ export function ProductCard({ product, onPress, style }: ProductCardProps) {
         <View style={styles.productPriceRow}>
           <Text style={styles.productPrice}>₹{product.price}</Text>
 
-          {quantity > 0 ? (
-            <View style={styles.counterContainer}>
-              <TouchableOpacity style={styles.counterBtn} onPress={handleRemove}>
-                <IconSymbol name="remove" size={12} color="white" />
-              </TouchableOpacity>
-              <View style={styles.quantityBox}>
-                <Text style={styles.quantityText}>{quantity}</Text>
-              </View>
-              <TouchableOpacity style={styles.counterBtn} onPress={handleAdd}>
-                <IconSymbol name="add" size={12} color="white" />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <TouchableOpacity
-              style={styles.addButton}
-              activeOpacity={0.6}
-              onPress={handleAdd}
-            >
-              <IconSymbol name="add" size={12} color={Colors.light.onSecondary} />
-              <Text style={styles.addButtonText}>Add</Text>
-            </TouchableOpacity>
-          )}
+          <AddButton
+            quantity={quantity}
+            onAdd={handleAdd}
+            onRemove={handleRemove}
+          />
         </View>
       </View>
     </TouchableOpacity>
@@ -139,49 +125,4 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: Colors.light.primary,
   },
-  addButton: {
-    backgroundColor: Colors.light.secondary,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 2,
-    width: 80,
-    height: 28,
-    borderRadius: 8,
-  },
-  addButtonText: {
-    color: Colors.light.onSecondary,
-    fontSize: 11,
-    fontWeight: '800',
-  },
-  counterContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.light.secondary,
-    borderRadius: 8,
-    overflow: 'hidden',
-    width: 80,
-    height: 28,
-    borderWidth: 1,
-    borderColor: Colors.light.secondary,
-  },
-  counterBtn: {
-    width: 24,
-    height: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  quantityBox: {
-    backgroundColor: 'white',
-    width: 32,
-    height: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  quantityText: {
-    color: Colors.light.onSurface,
-    fontSize: 12,
-    fontWeight: '800',
-    textAlign: 'center',
-  }
 });

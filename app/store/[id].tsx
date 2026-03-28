@@ -164,35 +164,4 @@ const styles = StyleSheet.create({
     padding: 16, 
     gap: 16 
   },
-  productCard: { 
-    flex: 1,
-    minWidth: '30%', 
-    backgroundColor: Colors.light.surfaceContainerLowest, 
-    borderRadius: 16, 
-    padding: 8,
-    borderWidth: 1,
-    borderColor: Colors.light.outlineVariant + '33'
-  },
-  productImageBg: { 
-    aspectRatio: 1, 
-    backgroundColor: Colors.light.surfaceContainerLow, 
-    borderRadius: 16, 
-    marginBottom: 12,
-    overflow: 'hidden'
-  },
-  productImage: { width: '100%', height: '100%', resizeMode: 'contain' },
-  productInfo: { gap: 4 },
-  productName: { fontFamily: Fonts.headline, fontWeight: '700', fontSize: 12, color: Colors.light.onSurface },
-  productSize: { fontSize: 10, color: Colors.light.onSurfaceVariant },
-  productPriceRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 },
-  productPrice: { fontFamily: Fonts.headline, fontSize: 14, fontWeight: '700', color: Colors.light.primary },
-  addButton: { 
-    backgroundColor: Colors.light.secondary, 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    paddingHorizontal: 8, 
-    paddingVertical: 4, 
-    borderRadius: 8 
-  },
-  addButtonText: { color: 'white', fontSize: 11, fontWeight: '700', marginLeft: 4 }
 });

@@ -5,9 +5,11 @@ import { Colors, Fonts } from '../constants/theme';
 import { IconSymbol } from '../components/ui/icon-symbol';
 import { router } from 'expo-router';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useCart } from '../context/cart-context';
+import { ProductCard } from '../components/product-card';
 
 export default function CartScreen() {
   const insets = useSafeAreaInsets();
@@ -74,10 +76,13 @@ export default function CartScreen() {
         </View>
 
         <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: 110 + insets.bottom }]}>
-          {/* Shipment 1 */}
           <View style={styles.shipmentCard}>
             <View style={styles.shipmentHeader}>
                 <View style={styles.shipmentBadge}><Text style={styles.shipmentBadgeText}>Shipment 1</Text></View>
+                <TouchableOpacity style={styles.shareButton}>
+                  <Entypo name="share" size={18} color={Colors.light.primary} />
+                  <Text style={styles.shareText}>Share</Text>
+                </TouchableOpacity>
              </View>
 
              {items.map((item: any, i: number) => (
@@ -109,23 +114,15 @@ export default function CartScreen() {
              <Text style={styles.recommendTitle}>Before you checkout</Text>
              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.recommendRow}>
                 {[
-                  { id: '101', name: 'Brown Bread', size: '400g', price: '45', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' },
-                  { id: '102', name: 'Fresh Eggs', size: '6 pcs', price: '36', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' },
-                  { id: '103', name: 'Salted Butter', size: '100g', price: '58', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' },
+                  { id: '101', name: 'Brown Bread', size: '400g', price: '45', uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' },
+                  { id: '102', name: 'Fresh Eggs', size: '6 pcs', price: '36', uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' },
+                  { id: '103', name: 'Salted Butter', size: '100g', price: '58', uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' },
                 ].map((item, i) => (
-                  <View key={i} style={styles.recommendCard}>
-                     <Image source={{ uri: item.image }} style={styles.recommendImage} />
-                     <View style={styles.recommendInfo}>
-                        <Text style={styles.recommendName} numberOfLines={1}>{item.name}</Text>
-                        <Text style={styles.recommendSize}>{item.size}</Text>
-                        <View style={styles.recommendPriceRow}>
-                           <Text style={styles.recommendPrice}>₹{item.price}</Text>
-                           <TouchableOpacity style={styles.addBtn} onPress={() => addItem(item)}>
-                              <Text style={styles.addBtnText}>ADD</Text>
-                           </TouchableOpacity>
-                        </View>
-                     </View>
-                  </View>
+                  <ProductCard 
+                    key={i} 
+                    product={item} 
+                    style={{ width: 140, flex: 0, minWidth: 0 }}
+                  />
                 ))}
              </ScrollView>
           </View>
@@ -174,7 +171,10 @@ export default function CartScreen() {
                   </View>
                </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.payNowBtn}>
+            <TouchableOpacity 
+              style={styles.payNowBtn}
+              onPress={() => router.push('/payment-process')}
+            >
                <Text style={styles.payNowText}>Pay Now</Text>
                <IconSymbol name="chevron.right" size={20} color="white" />
             </TouchableOpacity>
@@ -249,9 +249,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.light.outlineVariant + '33' 
   },
-  shipmentHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
+  shipmentHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, alignItems: 'center' },
   shipmentBadge: { backgroundColor: Colors.light.surfaceContainerHigh, paddingHorizontal: 12, paddingVertical: 4, borderRadius: 8 },
   shipmentBadgeText: { fontSize: 11, fontWeight: '800', color: Colors.light.onSurfaceVariant },
+  shareButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: Colors.light.primary + '14',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 99,
+  },
+  shareText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: Colors.light.primary,
+  },
   cartItem: { flexDirection: 'row', gap: 16, marginBottom: 20, alignItems: 'center' },
   itemImage: { width: 64, height: 64, borderRadius: 12, backgroundColor: Colors.light.surfaceContainerLow },
   itemInfo: { flex: 1, gap: 2 },
@@ -368,20 +382,5 @@ const styles = StyleSheet.create({
   recommendSection: { marginBottom: 32 },
   recommendTitle: { fontFamily: Fonts.headline, fontSize: 16, fontWeight: '800', marginBottom: 16, paddingHorizontal: 4 },
   recommendRow: { gap: 12, paddingHorizontal: 4 },
-  recommendCard: { 
-    width: 140, 
-    backgroundColor: 'white', 
-    borderRadius: 20, 
-    overflow: 'hidden', 
-    borderWidth: 1, 
-    borderColor: Colors.light.outlineVariant + '33' 
-  },
-  recommendImage: { width: '100%', height: 100, backgroundColor: Colors.light.surfaceContainerLow },
-  recommendInfo: { padding: 12, gap: 4 },
-  recommendName: { fontFamily: Fonts.headline, fontSize: 12, fontWeight: '700', color: Colors.light.onSurface },
-  recommendSize: { fontSize: 10, color: Colors.light.onSurfaceVariant, fontWeight: '600' },
-  recommendPriceRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 },
-  recommendPrice: { fontSize: 13, fontWeight: '800', color: Colors.light.onSurface },
-  addBtn: { backgroundColor: Colors.light.primary + '1A', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, borderWidth: 1, borderColor: Colors.light.primary + '33' },
-  addBtnText: { color: Colors.light.primary, fontSize: 10, fontWeight: '800' }
 });
+

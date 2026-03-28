@@ -1,13 +1,17 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Platform } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Colors, Fonts } from '../../constants/theme';
-import { IconSymbol } from '../../components/ui/icon-symbol';
 import { router, useLocalSearchParams } from 'expo-router';
+import React from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { IconSymbol } from '../../components/ui/icon-symbol';
+import { Colors, Fonts } from '../../constants/theme';
+import { useCart } from '../../context/cart-context';
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
+  const { items, addItem, removeItem } = useCart();
+  const cartItem = items.find(item => item.id === 'current-product');
+  const quantity = cartItem ? cartItem.quantity : 0;
 
   return (
     <View style={styles.container}>
@@ -22,8 +26,8 @@ export default function ProductDetailScreen() {
 
         <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: 120 + insets.bottom }]}>
           <View style={styles.imageSection}>
-            <Image 
-              source={require('../../assets/image/logo.png')} 
+            <Image
+              source={require('../../assets/image/logo.png')}
               style={styles.productImage}
             />
           </View>
@@ -49,52 +53,65 @@ export default function ProductDetailScreen() {
 
 
             <View style={styles.shelfLifeBadge}>
-               <IconSymbol name="schedule" size={16} color={Colors.light.primary} />
-               <Text style={styles.shelfLifeText}>Shelf Life: 2 Days</Text>
+              <IconSymbol name="schedule" size={16} color={Colors.light.primary} />
+              <Text style={styles.shelfLifeText}>Shelf Life: 2 Days</Text>
             </View>
 
             <View style={styles.detailsContainer}>
-               <Text style={styles.detailsTitle}>Product Details</Text>
-               <Text style={styles.detailsText}>
-                 Freshly sourced toned milk from Amul. High in calcium and essential vitamins. 
-                 Perfect for your daily nutritional needs and morning coffee.
-               </Text>
+              <Text style={styles.detailsTitle}>Product Details</Text>
+              <Text style={styles.detailsText}>
+                Freshly sourced toned milk from Amul. High in calcium and essential vitamins.
+                Perfect for your daily nutritional needs and morning coffee.
+              </Text>
             </View>
 
             <View style={styles.relatedSection}>
-               <Text style={styles.detailsTitle}>Related Products</Text>
-               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.relatedRow}>
-                  {[1, 2, 3].map((_, i) => (
-                    <View key={i} style={styles.relatedCard}>
-                      <View style={styles.relatedImageBg}>
-                         <Image 
-                           source={require('../../assets/image/logo.png')} 
-                           style={{ width: '100%', height: '100%', resizeMode: 'contain' }} 
-                         />
-                      </View>
-                      <Text style={styles.relatedName}>Amul Gold</Text>
-                      <Text style={styles.relatedPrice}>₹35</Text>
+              <Text style={styles.detailsTitle}>Related Products</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.relatedRow}>
+                {[1, 2, 3].map((_, i) => (
+                  <View key={i} style={styles.relatedCard}>
+                    <View style={styles.relatedImageBg}>
+                      <Image
+                        source={require('../../assets/image/logo.png')}
+                        style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+                      />
                     </View>
-                  ))}
-               </ScrollView>
+                    <Text style={styles.relatedName}>Amul Gold</Text>
+                    <Text style={styles.relatedPrice}>₹35</Text>
+                  </View>
+                ))}
+              </ScrollView>
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
 
       <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 24) }]}>
-         <View style={styles.quantitySection}>
-            <TouchableOpacity style={styles.qtyBtn}>
-                <IconSymbol name="remove" size={20} color={Colors.light.primary} />
+        {quantity > 0 ? (
+          <View style={{ flex: 1, flexDirection: 'row', gap: 16 }}>
+            <View style={styles.quantitySection}>
+              <TouchableOpacity style={styles.qtyBtn} onPress={() => removeItem('current-product')}>
+                <IconSymbol name="remove" size={20} color="white" />
+              </TouchableOpacity>
+              <View style={styles.qtyBox}>
+                <Text style={styles.qtyText}>{quantity}</Text>
+              </View>
+              <TouchableOpacity style={styles.qtyBtn} onPress={() => addItem({ id: 'current-product', name: 'Amul Taaza Toned Milk', price: '30' })}>
+                <IconSymbol name="add" size={20} color="white" />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.addToCartBtn} onPress={() => router.push('/cart')}>
+              <Text style={styles.addToCartText}>View Cart</Text>
             </TouchableOpacity>
-            <Text style={styles.qtyText}>1</Text>
-            <TouchableOpacity style={styles.qtyBtn}>
-                <IconSymbol name="add" size={20} color={Colors.light.primary} />
-            </TouchableOpacity>
-         </View>
-         <TouchableOpacity style={styles.addToCartBtn} onPress={() => router.push('/cart')}>
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={[styles.addToCartBtn, { height: 56 }]}
+            onPress={() => addItem({ id: 'current-product', name: 'Amul Taaza Toned Milk', price: '30' })}
+          >
             <Text style={styles.addToCartText}>Add to Cart</Text>
-         </TouchableOpacity>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -102,20 +119,39 @@ export default function ProductDetailScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.light.background },
-  header: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    padding: 16, 
-    justifyContent: 'space-between' 
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    justifyContent: 'space-between'
   },
   closeButton: { padding: 8 },
   headerTitle: { fontFamily: Fonts.headline, fontSize: 16, fontWeight: '800' },
+  cartButton: { padding: 8, position: 'relative' },
+  cartBadge: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: Colors.light.secondary,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: Colors.light.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartBadgeText: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: Colors.light.onSecondary,
+  },
   spacer: { width: 40 },
   scrollContent: { paddingBottom: 40 },
-  imageSection: { 
-    aspectRatio: 1, 
-    backgroundColor: Colors.light.surfaceContainerLow, 
-    alignItems: 'center', 
+  imageSection: {
+    aspectRatio: 1,
+    backgroundColor: Colors.light.surfaceContainerLow,
+    alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 16,
     borderRadius: 32,
@@ -133,16 +169,16 @@ const styles = StyleSheet.create({
   mrpText: { fontSize: 16, color: Colors.light.onSurfaceVariant, textDecorationLine: 'line-through' },
   discountBadge: { backgroundColor: Colors.light.secondaryContainer, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
   discountText: { color: Colors.light.onSecondaryContainer, fontSize: 12, fontWeight: '800' },
-  shelfLifeBadge: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    gap: 8, 
-    backgroundColor: Colors.light.surfaceContainerHigh, 
-    paddingHorizontal: 12, 
-    paddingVertical: 8, 
-    borderRadius: 12, 
+  shelfLifeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: Colors.light.surfaceContainerHigh,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
     alignSelf: 'flex-start',
-    marginBottom: 32 
+    marginBottom: 32
   },
   shelfLifeText: { fontSize: 13, fontWeight: '700', color: Colors.light.onSurfaceVariant },
   detailsContainer: { marginBottom: 32 },
@@ -154,14 +190,14 @@ const styles = StyleSheet.create({
   relatedImageBg: { width: 120, height: 120, backgroundColor: Colors.light.surfaceContainerLow, borderRadius: 20 },
   relatedName: { fontWeight: '700', fontSize: 13 },
   relatedPrice: { fontWeight: '800', color: Colors.light.primary },
-  footer: { 
-    position: 'absolute', 
-    bottom: 0, 
-    left: 0, 
-    right: 0, 
-    backgroundColor: 'white', 
-    padding: 24, 
-    flexDirection: 'row', 
+  footer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    padding: 24,
+    flexDirection: 'row',
     gap: 16,
     borderTopWidth: 1,
     borderTopColor: Colors.light.surfaceContainer,
@@ -169,23 +205,37 @@ const styles = StyleSheet.create({
   quantitySection: { 
     flexDirection: 'row', 
     alignItems: 'center', 
-    backgroundColor: Colors.light.surfaceContainerHigh, 
+    backgroundColor: Colors.light.secondary, 
     borderRadius: 16, 
-    paddingHorizontal: 8 
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: Colors.light.secondary,
   },
-  qtyBtn: { padding: 12 },
-  qtyText: { fontFamily: Fonts.headline, fontSize: 18, fontWeight: '800', paddingHorizontal: 12 },
-  addToCartBtn: { 
-    flex: 1, 
-    backgroundColor: Colors.light.primary, 
-    borderRadius: 16, 
+  qtyBtn: { 
+    width: 48,
+    height: 48,
     alignItems: 'center', 
+    justifyContent: 'center',
+  },
+  qtyBox: {
+    backgroundColor: 'white',
+    width: 60,
+    height: 48,
+    alignItems: 'center', 
+    justifyContent: 'center',
+  },
+  qtyText: { fontFamily: Fonts.headline, fontSize: 18, fontWeight: '800', color: Colors.light.onSurface },
+  addToCartBtn: {
+    flex: 1,
+    backgroundColor: Colors.light.primary,
+    borderRadius: 16,
+    alignItems: 'center',
     justifyContent: 'center',
     shadowColor: Colors.light.primary,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.2,
     shadowRadius: 16,
-    elevation: 8 
+    elevation: 8
   },
   addToCartText: { color: 'white', fontFamily: Fonts.headline, fontSize: 18, fontWeight: '700' }
 });

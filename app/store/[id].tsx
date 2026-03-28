@@ -6,8 +6,11 @@ import { IconSymbol } from '../../components/ui/icon-symbol';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ProductCard } from '../../components/product-card';
 
+import { useCart } from '../../context/cart-context';
+
 export default function StoreScreen() {
   const { id } = useLocalSearchParams();
+  const { itemCount } = useCart();
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -19,9 +22,7 @@ export default function StoreScreen() {
           <Text style={styles.storeName}>Sharma General Store</Text>
           <Text style={styles.storeAddress}>Sector 21, Chandigarh</Text>
         </View>
-        <TouchableOpacity style={styles.cartButton}>
-          <IconSymbol name="shopping_cart" size={24} color={Colors.light.onSurface} />
-        </TouchableOpacity>
+        <View style={{ width: 40 }} />
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent} stickyHeaderIndices={[1]}>
@@ -90,7 +91,25 @@ const styles = StyleSheet.create({
   headerInfo: { flex: 1 },
   storeName: { fontFamily: Fonts.headline, fontSize: 18, fontWeight: '800', color: Colors.light.onSurface },
   storeAddress: { fontSize: 12, color: Colors.light.onSurfaceVariant },
-  cartButton: { padding: 8 },
+  cartButton: { padding: 8, position: 'relative' },
+  cartBadge: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: Colors.light.secondary,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    borderWidth: 1.5,
+    borderColor: Colors.light.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartBadgeText: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: Colors.light.onSecondary,
+  },
   scrollContent: { paddingBottom: 100 },
   heroSection: { height: 240, position: 'relative' },
   heroImage: { width: '100%', height: '100%', resizeMode: 'cover' },

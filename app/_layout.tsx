@@ -12,19 +12,37 @@ export const unstable_settings = {
   anchor: '(tabs)',
 };
 
+import { CartProvider } from '../context/cart-context';
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
     <SafeAreaProvider>
-      <LayoutContent colorScheme={colorScheme} />
+      <CartProvider>
+        <LayoutContent colorScheme={colorScheme} />
+      </CartProvider>
     </SafeAreaProvider>
   );
 }
 
+import { useSegments } from 'expo-router';
+import { CartFloatingBar } from '../components/cart-floating-bar';
+
 function LayoutContent({ colorScheme }: { colorScheme: any }) {
   const insets = useSafeAreaInsets();
+  const segments = useSegments();
   
+  // Hide cart bar on specific screens
+  const isCartScreen = segments[0] === 'cart';
+  const isTrackingScreen = segments[0] === 'tracking';
+  const hideCartBar = isCartScreen || isTrackingScreen;
+
+  // If we are in tabs, the tab bar is 64px. 
+  // We need to be above the tab bar AND the safe area inset bottom.
+  const isInTabs = (segments as any[]).includes('(tabs)');
+  const bottomOffset = isInTabs ? insets.bottom + 64 + 10 : insets.bottom + 16;
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <View style={{ flex: 1, backgroundColor: '#000000' }}>
@@ -37,6 +55,7 @@ function LayoutContent({ colorScheme }: { colorScheme: any }) {
           <Stack.Screen name="cart" options={{ animation: 'slide_from_bottom' }} />
           <Stack.Screen name="tracking" />
         </Stack>
+        {!hideCartBar && <CartFloatingBar bottomOffset={bottomOffset} />}
         {/* Universal Black System Navigation Bar area */}
         <View style={{ height: insets.bottom, backgroundColor: '#000000' }} />
       </View>

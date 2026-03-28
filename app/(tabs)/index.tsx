@@ -16,7 +16,11 @@ import { IconSymbol } from '../../components/ui/icon-symbol';
 import { router } from 'expo-router';
 import { ProductCard } from '../../components/product-card';
 
+import { useCart } from '../../context/cart-context';
+
 export default function HomeScreen() {
+  const { itemCount } = useCart();
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       {/* TopAppBar */}
@@ -32,12 +36,7 @@ export default function HomeScreen() {
                 <Text style={styles.locationText}>Sector 21, Chandigarh</Text>
              </View>
           </View>
-          <TouchableOpacity style={styles.cartButton}>
-            <IconSymbol name="shopping_cart" size={24} color={Colors.light.onSurface} />
-            <View style={styles.cartBadge}>
-              <Text style={styles.cartBadgeText}>3</Text>
-            </View>
-          </TouchableOpacity>
+          <View style={{ width: 40 }} />
         </View>
         <View style={styles.headerDivider} />
       </View>

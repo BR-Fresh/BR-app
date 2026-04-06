@@ -1,20 +1,27 @@
-import { Tabs } from 'expo-router';
 import React from 'react';
-import { View, Platform, Text } from 'react-native';
+import { View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import { Colors, Fonts } from '../../constants/theme';
 import { useColorScheme } from '../../hooks/use-color-scheme';
-import Entypo from '@expo/vector-icons/Entypo';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
-export default function TabLayout() {
+import HomeScreen from '../screens/HomeScreen';
+import OrdersScreen from '../screens/OrdersScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+
+const Tab = createBottomTabNavigator();
+
+export default function TabNavigator() {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? 'light'];
   const insets = useSafeAreaInsets();
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.background }}>
-      <Tabs
+      <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: '#000000',
           tabBarInactiveTintColor: '#888888',
@@ -24,12 +31,9 @@ export default function TabLayout() {
             borderTopColor: Colors.light.outlineVariant + '33',
             elevation: 0,
             borderTopWidth: 1,
-            // Fixed height - do NOT include insets.bottom
-            // so the tab bar stops ABOVE the system nav area
             height: 64,
             paddingTop: 6,
             paddingBottom: 8,
-            // Remove any safe area margin the tab bar adds by default
             marginBottom: 0,
           },
           tabBarLabelStyle: {
@@ -38,14 +42,13 @@ export default function TabLayout() {
             fontSize: 10,
             marginTop: 2,
           },
-          // This is the key: tell the tab bar to NOT handle safe area itself
           tabBarHideOnKeyboard: true,
         }}
         safeAreaInsets={{ bottom: 0 }}
       >
-
-        <Tabs.Screen
-          name="index"
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
           options={{
             title: 'Home',
             tabBarIcon: ({ color, size }) => (
@@ -53,8 +56,9 @@ export default function TabLayout() {
             ),
           }}
         />
-        <Tabs.Screen
-          name="orders"
+        <Tab.Screen
+          name="Orders"
+          component={OrdersScreen}
           options={{
             title: 'Orders',
             tabBarIcon: ({ color, size }) => (
@@ -62,8 +66,9 @@ export default function TabLayout() {
             ),
           }}
         />
-        <Tabs.Screen
-          name="profile"
+        <Tab.Screen
+          name="Profile"
+          component={ProfileScreen}
           options={{
             title: 'Profile',
             tabBarIcon: ({ color, size }) => (
@@ -71,7 +76,7 @@ export default function TabLayout() {
             ),
           }}
         />
-      </Tabs>
+      </Tab.Navigator>
     </View>
   );
 }

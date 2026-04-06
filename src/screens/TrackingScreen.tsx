@@ -10,17 +10,20 @@ import {
   Dimensions
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Colors, Fonts } from '../constants/theme';
-import { IconSymbol } from '../components/ui/icon-symbol';
-import { router } from 'expo-router';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { Colors, Fonts } from '../../constants/theme';
+import { IconSymbol } from '../../components/ui/icon-symbol';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function TrackingScreen() {
   const insets = useSafeAreaInsets();
   const [selectedTip, setSelectedTip] = useState<number | 'custom' | null>(null);
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   return (
     <View style={styles.container}>
@@ -28,7 +31,7 @@ export default function TrackingScreen() {
       <SafeAreaView edges={['top']} style={styles.navBar}>
         <View style={styles.navContent}>
           <View style={styles.navLeft}>
-            <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
               <IconSymbol name="arrow_back" size={24} color={Colors.light.primary} />
             </TouchableOpacity>
             <Text style={styles.navTitle}>Order Tracking</Text>
@@ -254,13 +257,5 @@ const styles = StyleSheet.create({
   helpButton: { flex: 1, backgroundColor: 'white', borderWidth: 1, borderColor: '#bfc9be', borderRadius: 16, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
   helpButtonText: { fontFamily: Fonts.headline, fontSize: 14, fontWeight: '700', color: Colors.light.primary },
   cancelButton: { flex: 1, backgroundColor: '#FFF0F0', borderRadius: 16, paddingVertical: 14, alignItems: 'center', justifyContent: 'center' },
-  cancelButtonText: { fontFamily: Fonts.headline, fontSize: 14, fontWeight: '700', color: '#BA1A1A' },
-  tipSection: { backgroundColor: 'white', borderRadius: 24, padding: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, borderWidth: 1, borderColor: Colors.light.outlineVariant + '33' },
-  tipTitle: { fontFamily: Fonts.headline, fontSize: 16, fontWeight: '800', color: Colors.light.onSurface },
-  tipSubtitle: { fontSize: 12, color: Colors.light.onSurfaceVariant, marginTop: 4, marginBottom: 16 },
-  tipOptionsRow: { gap: 12 },
-  tipOption: { paddingHorizontal: 20, paddingVertical: 10, borderRadius: 16, borderWidth: 1, borderColor: Colors.light.outlineVariant + '4D', backgroundColor: Colors.light.surfaceContainerLowest },
-  tipOptionSelected: { borderColor: Colors.light.secondary, backgroundColor: Colors.light.secondary + '1A', borderWidth: 2 },
-  tipAmountText: { fontFamily: Fonts.headline, fontSize: 14, fontWeight: '700', color: Colors.light.onSurface },
-  tipAmountTextSelected: { color: Colors.light.secondary, fontWeight: '800' }
+  cancelButtonText: { fontFamily: Fonts.headline, fontSize: 14, fontWeight: '700', color: '#BA1A1A' }
 });

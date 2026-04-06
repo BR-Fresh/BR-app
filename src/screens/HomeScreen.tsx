@@ -12,11 +12,11 @@ import {
   Dimensions
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { Colors, Fonts } from '../../constants/theme';
 import { IconSymbol } from '../../components/ui/icon-symbol';
-import { router } from 'expo-router';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { ProductCard } from '../../components/product-card';
 
 import { useCart } from '../../context/cart-context';
@@ -28,6 +28,7 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 export default function HomeScreen() {
   const { itemCount } = useCart();
   const [isLocationModalVisible, setIsLocationModalVisible] = useState(false);
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -44,7 +45,6 @@ export default function HomeScreen() {
           >
             <View style={styles.locationTitleRow}>
               <Text style={styles.locationTitle}>Sector 21</Text>
-              <AntDesign name="down" size={14} color={Colors.light.onSurfaceVariant} />
             </View>
             <Text style={styles.locationSubText} numberOfLines={1}>Chandigarh, India</Text>
           </TouchableOpacity>
@@ -58,9 +58,9 @@ export default function HomeScreen() {
           <TouchableOpacity 
             style={styles.searchBar} 
             activeOpacity={0.8}
-            onPress={() => router.push('/search')}
+            onPress={() => navigation.navigate('Search')}
           >
-            <IconSymbol name="search" size={20} color={Colors.light.outline} style={styles.searchIcon} />
+            <IconSymbol name="search" size={20} color={Colors.light.outline} style={styles.searchIcon as any} />
             <Text style={styles.searchPlaceholder}>Search for milk, atta, rice...</Text>
             <IconSymbol name="mic" size={24} color={Colors.light.primary} />
           </TouchableOpacity>
@@ -113,7 +113,7 @@ export default function HomeScreen() {
            <Text style={styles.sectionTitle}>Stores near you</Text>
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.storeRow}>
-           <TouchableOpacity style={styles.storeCard} onPress={() => router.push('/store/1')}>
+           <TouchableOpacity style={styles.storeCard} onPress={() => navigation.navigate('Store', { id: '1' })}>
              <View style={styles.storeCardHeader}>
                 <Image 
                     source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmkIdldCPeKnJXcXtPkaJUWoMS7eHLGS0Hykq7s1IL4RSeOYd8j1xiO1v0opZ-DfXVpN43DPQ63ovpVfhbPx8uYh9LjVbbt_nD_FEe8DBRuOkg1ZKAv-B0WpWbEouJDIEZBBks_dsVtFNONZnHWLnXzUIMML-eYO53IejxXgIJ8hLGIXkki6xJezAHAbYf1gcex9UzEfY-6uThB2Kls5Rphmi7zPtzXoZkkcyu49OD-dzh8e2cjD_dxesGb6KimxSWqz--TTnB2qY' }}
@@ -142,7 +142,7 @@ export default function HomeScreen() {
 
         {/* Editor's Choice Grid */}
         <View style={styles.sectionHeader}>
-           <Text style={[styles.sectionTitle, styles.italicTitle]}>Editor's Choice</Text>
+           <Text style={[styles.sectionTitle, styles.italicTitle]}>Editor&apos;s Choice</Text>
         </View>
          <View style={styles.productGrid}>
             {[
@@ -152,7 +152,7 @@ export default function HomeScreen() {
               <ProductCard 
                 key={i} 
                 product={prod} 
-                onPress={() => router.push('/product/1')} 
+                onPress={() => navigation.navigate('Product', { id: '1' })} 
               />
             ))}
          </View>
@@ -425,5 +425,3 @@ const styles = StyleSheet.create({
     gap: 16,
   }
 });
-
-

@@ -11,13 +11,15 @@ import {
   ScrollView
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { Colors, Fonts } from '../../constants/theme';
-import { router } from 'expo-router';
 import { IconSymbol } from '../../components/ui/icon-symbol';
 
 export default function LoginScreen() {
   const [phone, setPhone] = useState('');
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -65,10 +67,11 @@ export default function LoginScreen() {
 
             <TouchableOpacity 
               style={styles.ctaButton}
-              onPress={() => router.push('/(auth)/otp')}
+              onPress={() => navigation.navigate('Otp')}
             >
               <Text style={styles.ctaText}>Send OTP</Text>
             </TouchableOpacity>
+
           </View>
 
           {/* Footer moved inside ScrollView */}

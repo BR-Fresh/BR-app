@@ -1,4 +1,5 @@
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { 
   StyleSheet, 
@@ -7,19 +8,18 @@ import {
   TextInput, 
   TouchableOpacity, 
   ScrollView, 
-  FlatList,
-  Image,
   Platform
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { IconSymbol } from '../components/ui/icon-symbol';
-import { Colors, Fonts } from '../constants/theme';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { ProductCard } from '../components/product-card';
+import { IconSymbol } from '../../components/ui/icon-symbol';
+import { Colors, Fonts } from '../../constants/theme';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { ProductCard } from '../../components/product-card';
 
 export default function SearchScreen() {
   const insets = useSafeAreaInsets();
   const [query, setQuery] = useState('');
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
   
   const recentSearches = ['Amul Milk', 'Fresh Tomatoes', 'Atta 10kg', 'Bread'];
   const popularCategories = ['Dairy', 'Eggs', 'Fresh Fruits', 'Cleaning'];
@@ -29,7 +29,7 @@ export default function SearchScreen() {
       <SafeAreaView edges={['top']} style={{ flex: 1 }}>
         {/* Search Header */}
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
             <IconSymbol name="arrow_back" size={24} color={Colors.light.onSurface} />
           </TouchableOpacity>
           <View style={styles.searchBar}>
@@ -85,7 +85,7 @@ export default function SearchScreen() {
             </>
           ) : (
             <View style={styles.resultsContainer}>
-               <Text style={styles.resultsTitle}>Showing results for "{query}"</Text>
+               <Text style={styles.resultsTitle}>Showing results for &quot;{query}&quot;</Text>
                <View style={styles.productGrid}>
                  {[
                    { name: 'Amul Taaza Milk', size: '500ml', price: '30' },
@@ -94,7 +94,7 @@ export default function SearchScreen() {
                    <ProductCard 
                      key={i} 
                      product={prod} 
-                     onPress={() => router.push('/product/1')} 
+                     onPress={() => navigation.navigate('Product', { id: '1' })} 
                    />
                  ))}
                </View>

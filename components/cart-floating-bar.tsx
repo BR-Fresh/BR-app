@@ -1,4 +1,5 @@
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors, Fonts } from '../constants/theme';
@@ -11,6 +12,7 @@ export function CartFloatingBar({ bottomOffset = 16 }: { bottomOffset?: number }
   const translateY = useRef(new Animated.Value(itemCount > 0 ? 0 : 100)).current;
   const scaleX = useRef(new Animated.Value(itemCount > 0 ? 1 : 0.5)).current;
   const opacity = useRef(new Animated.Value(itemCount > 0 ? 1 : 0)).current;
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   useEffect(() => {
     if (itemCount > 0) {
@@ -73,7 +75,7 @@ export function CartFloatingBar({ bottomOffset = 16 }: { bottomOffset?: number }
       <TouchableOpacity
         style={styles.bar}
         activeOpacity={0.9}
-        onPress={() => router.push('/cart')}
+        onPress={() => navigation.navigate('Cart')}
       >
         <View style={styles.leftSection}>
           <View style={styles.countSquare}>

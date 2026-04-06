@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, Animated } from 'react-native';
-import { Colors, Fonts } from '../constants/theme';
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { Colors, Fonts } from '../../constants/theme';
 
 export default function SplashScreen() {
-  const fadeAnim = new Animated.Value(0);
-  const scaleAnim = new Animated.Value(0.9);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(0.9)).current;
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   useEffect(() => {
     Animated.parallel([
@@ -22,11 +25,11 @@ export default function SplashScreen() {
     ]).start();
 
     const timer = setTimeout(() => {
-      router.replace('/(auth)/login');
+      navigation.replace('Login');
     }, 2500);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [navigation, fadeAnim, scaleAnim]);
 
   return (
     <View style={styles.container}>
@@ -36,7 +39,7 @@ export default function SplashScreen() {
         <View style={styles.logoContainer}>
             <View style={styles.logoContent}>
                 <Image 
-                  source={require('../assets/image/icon transparent.png')} 
+                  source={require('../../assets/image/icon transparent.png')} 
                   style={{ width: 280, height: 280, resizeMode: 'contain' }} 
                 />
             </View>
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
   backgroundTexture: {
     ...StyleSheet.absoluteFillObject,
     opacity: 0.1,
-    backgroundColor: '#005129', // Subtle texture bias
+    backgroundColor: '#005129',
   },
   content: {
     alignItems: 'center',
@@ -77,69 +80,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 32,
   },
-  logoBg1: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: Colors.light.surfaceContainerLowest,
-    borderRadius: 40,
-    transform: [{ rotate: '12deg' }],
-    shadowColor: Colors.light.onSurface,
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.04,
-    shadowRadius: 32,
-  },
-  logoBg2: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
-    borderRadius: 40,
-    transform: [{ rotate: '-6deg' }],
-  },
   logoContent: {
     alignItems: 'center',
-  },
-  logoIcon: {
-    fontSize: 48,
-  },
-  logoIconSub: {
-    fontSize: 48,
-    marginTop: -20,
-  },
-  brandInfo: {
-    alignItems: 'center',
-    marginBottom: 48,
-  },
-  brandName: {
-    fontFamily: Fonts.headline,
-    fontSize: 48,
-    fontWeight: '800',
-    color: Colors.light.primary,
-    fontStyle: 'italic',
-    letterSpacing: -1,
-  },
-  brandSlogan: {
-    fontFamily: Fonts.body,
-    fontSize: 18,
-    color: Colors.light.onSurfaceVariant,
-    opacity: 0.8,
-    textAlign: 'center',
-    lineHeight: 28,
-  },
-  editorialGrid: {
-    flexDirection: 'row',
-    gap: 16,
-    width: '100%',
-    justifyContent: 'center',
-  },
-  editorialImage: {
-    width: 140,
-    height: 140,
-    borderRadius: 24,
-    backgroundColor: Colors.light.surfaceContainerLowest,
-  },
-  imageRotateLeft: {
-    transform: [{ rotate: '2deg' }],
-  },
-  imageRotateRight: {
-    transform: [{ rotate: '-3deg' }, { translateY: 16 }],
   },
   loadingContainer: {
     position: 'absolute',

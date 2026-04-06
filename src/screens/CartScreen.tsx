@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Platform, Modal } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Colors, Fonts } from '../constants/theme';
-import { IconSymbol } from '../components/ui/icon-symbol';
-import { router } from 'expo-router';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import Entypo from '@expo/vector-icons/Entypo';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { useCart } from '../context/cart-context';
-import { ProductCard } from '../components/product-card';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { Colors, Fonts } from '../../constants/theme';
+import { IconSymbol } from '../../components/ui/icon-symbol';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { useCart } from '../../context/cart-context';
+import { ProductCard } from '../../components/product-card';
 
 export default function CartScreen() {
   const insets = useSafeAreaInsets();
   const { items, totalPrice, addItem, removeItem, itemCount } = useCart();
   const [selectedPayment, setSelectedPayment] = useState('Google Pay');
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   const paymentMethods = [
     { id: 'upi', name: 'Google Pay', icon: 'money-bill-transfer', type: 'fa6' },
@@ -37,7 +40,7 @@ export default function CartScreen() {
       <View style={styles.container}>
         <SafeAreaView edges={['top']} style={{ flex: 1 }}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
               <IconSymbol name="arrow_back" size={24} color={Colors.light.onSurface} />
             </TouchableOpacity>
             <View style={styles.headerInfo}>
@@ -49,7 +52,7 @@ export default function CartScreen() {
           <View style={styles.emptyContainer}>
             <IconSymbol name="shopping_cart" size={64} color={Colors.light.outlineVariant} />
             <Text style={styles.emptyText}>Your cart is empty</Text>
-            <TouchableOpacity style={styles.shopBtn} onPress={() => router.replace('/(tabs)')}>
+            <TouchableOpacity style={styles.shopBtn} onPress={() => navigation.replace('MainTabs')}>
               <Text style={styles.shopBtnText}>Start Shopping</Text>
             </TouchableOpacity>
           </View>
@@ -62,7 +65,7 @@ export default function CartScreen() {
     <View style={styles.container}>
       <SafeAreaView edges={['top']} style={{ flex: 1 }}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
             <IconSymbol name="arrow_back" size={24} color={Colors.light.onSurface} />
           </TouchableOpacity>
           <View style={styles.headerInfo}>
@@ -173,7 +176,7 @@ export default function CartScreen() {
             </TouchableOpacity>
             <TouchableOpacity 
               style={styles.payNowBtn}
-              onPress={() => router.push('/payment-process')}
+              onPress={() => navigation.navigate('Payment')}
             >
                <Text style={styles.payNowText}>Pay Now</Text>
                <IconSymbol name="chevron.right" size={20} color="white" />
@@ -374,13 +377,5 @@ const styles = StyleSheet.create({
   selectedOption: { borderColor: Colors.light.primary + '33', backgroundColor: Colors.light.primary + '08' },
   methodIcon: { width: 44, height: 44, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   paymentOptionText: { flex: 1, fontFamily: Fonts.body, fontSize: 16, fontWeight: '600', color: Colors.light.onSurface },
-  selectedOptionText: { color: Colors.light.primary, fontWeight: '700' },
-  emptyContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32, gap: 16 },
-  emptyText: { fontFamily: Fonts.headline, fontSize: 18, fontWeight: '700', color: Colors.light.onSurfaceVariant },
-  shopBtn: { backgroundColor: Colors.light.primary, paddingHorizontal: 24, paddingVertical: 12, borderRadius: 16, marginTop: 8 },
-  shopBtnText: { color: 'white', fontWeight: '800', fontSize: 14 },
-  recommendSection: { marginBottom: 32 },
-  recommendTitle: { fontFamily: Fonts.headline, fontSize: 16, fontWeight: '800', marginBottom: 16, paddingHorizontal: 4 },
-  recommendRow: { gap: 12, paddingHorizontal: 4 },
+  selectedOptionText: { color: Colors.light.primary, fontWeight: '700' }
 });
-

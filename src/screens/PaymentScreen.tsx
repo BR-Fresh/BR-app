@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { 
   StyleSheet, 
@@ -10,12 +9,16 @@ import {
   Easing
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors, Fonts } from '../constants/theme';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-export default function PaymentProcessScreen() {
+import { Colors, Fonts } from '../../constants/theme';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+export default function PaymentScreen() {
   const [status, setStatus] = useState<'processing' | 'choice' | 'success' | 'failed'>('processing');
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   // Multi-step animation values
   const ringScale = useRef(new Animated.Value(0)).current;
@@ -106,9 +109,9 @@ export default function PaymentProcessScreen() {
     // Navigate after animation completes
     setTimeout(() => {
       if (isSuccess) {
-        router.replace('/tracking');
+        navigation.replace('Tracking');
       } else {
-        router.back();
+        navigation.goBack();
       }
     }, 3000);
   };

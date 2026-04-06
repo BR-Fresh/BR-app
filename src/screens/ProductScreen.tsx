@@ -1,14 +1,18 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 import { IconSymbol } from '../../components/ui/icon-symbol';
 import { Colors, Fonts } from '../../constants/theme';
 import { useCart } from '../../context/cart-context';
 import { ProductCard } from '../../components/product-card';
 
-export default function ProductDetailScreen() {
-  const { id } = useLocalSearchParams();
+export default function ProductScreen() {
+  const route = useRoute<RouteProp<{ params: { id: string } }>>();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const { id } = route.params || {};
   const insets = useSafeAreaInsets();
   const { items, addItem, removeItem } = useCart();
   const cartItem = items.find(item => item.id === 'current-product');
@@ -18,7 +22,7 @@ export default function ProductDetailScreen() {
     <View style={styles.container}>
       <SafeAreaView edges={['top']} style={{ flex: 1 }}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.closeButton}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeButton}>
             <IconSymbol name="close" size={24} color={Colors.light.onSurface} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Product Details</Text>
@@ -28,7 +32,7 @@ export default function ProductDetailScreen() {
         <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: 120 + insets.bottom }]}>
           <View style={styles.imageSection}>
             <Image
-              source={require('../../assets/image/logo.png')}
+              source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' }}
               style={styles.productImage}
             />
           </View>
@@ -70,13 +74,14 @@ export default function ProductDetailScreen() {
               <Text style={styles.detailsTitle}>Related Products</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.relatedRow}>
                 {[
-                  { id: 'rel-1', name: 'Amul Gold', size: '500ml', price: '35' },
-                  { id: 'rel-2', name: 'Amul SlimnTrim', size: '500ml', price: '28' },
-                  { id: 'rel-3', name: 'Amul Cow Milk', size: '500ml', price: '32' },
+                  { id: 'rel-1', name: 'Amul Gold', size: '500ml', price: '35', uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' },
+                  { id: 'rel-2', name: 'Amul SlimnTrim', size: '500ml', price: '28', uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' },
+                  { id: 'rel-3', name: 'Amul Cow Milk', size: '500ml', price: '32', uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7_YYu3erkZQuZXXy2-UwewD-HzgW7yFQilU20MxBn3DJdBu9xXMi53-O0F9-ncmzTRi2Z_J5S6I3eR0y092mkIVP6HSXUsDweK1KKN4sQsy744rOSDcmQXALvNNmsyxQfFRbcKoKkwrl5Y616JzzFdfnNmiCVsCw2tbKvrHW3RMujx8s78IFJhFjQHXZJqyF99Ktg9zM2R_pb1Yw0IULTDk15hOMAqIWU0VfqYvlEtN3bPzEV-fUncVoqsc1bC21Jrh_k99zW9Zc' },
                 ].map((prod: any, i) => (
                   <ProductCard 
                     key={i} 
                     product={prod} 
+                    onPress={() => navigation.navigate('Product', { id: prod.id })}
                     style={{ width: 140, flex: 0, minWidth: 0 }}
                   />
                 ))}
@@ -100,7 +105,7 @@ export default function ProductDetailScreen() {
                 <IconSymbol name="add" size={20} color="white" />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.addToCartBtn} onPress={() => router.push('/cart')}>
+            <TouchableOpacity style={styles.addToCartBtn} onPress={() => navigation.navigate('Cart')}>
               <Text style={styles.addToCartText}>View Cart</Text>
             </TouchableOpacity>
           </View>

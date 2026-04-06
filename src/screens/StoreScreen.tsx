@@ -1,21 +1,24 @@
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors, Fonts } from '../../constants/theme';
-import { IconSymbol } from '../../components/ui/icon-symbol';
-import { router, useLocalSearchParams } from 'expo-router';
-import { ProductCard } from '../../components/product-card';
 
+import { IconSymbol } from '../../components/ui/icon-symbol';
+import { Colors, Fonts } from '../../constants/theme';
+import { ProductCard } from '../../components/product-card';
 import { useCart } from '../../context/cart-context';
 
 export default function StoreScreen() {
-  const { id } = useLocalSearchParams();
+  const route = useRoute<RouteProp<{ params: { id: string } }>>();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const { id } = route.params || {};
   const { itemCount } = useCart();
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <IconSymbol name="arrow_back" size={24} color={Colors.light.onSurface} />
         </TouchableOpacity>
         <View style={styles.headerInfo}>
@@ -69,7 +72,7 @@ export default function StoreScreen() {
              <ProductCard 
                key={i} 
                product={prod} 
-               onPress={() => router.push('/product/1')} 
+               onPress={() => navigation.navigate('Product', { id: '1' })} 
              />
            ))}
         </View>
@@ -91,25 +94,6 @@ const styles = StyleSheet.create({
   headerInfo: { flex: 1 },
   storeName: { fontFamily: Fonts.headline, fontSize: 18, fontWeight: '800', color: Colors.light.onSurface },
   storeAddress: { fontSize: 12, color: Colors.light.onSurfaceVariant },
-  cartButton: { padding: 8, position: 'relative' },
-  cartBadge: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    backgroundColor: Colors.light.secondary,
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    borderWidth: 1.5,
-    borderColor: Colors.light.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cartBadgeText: {
-    fontSize: 9,
-    fontWeight: '800',
-    color: Colors.light.onSecondary,
-  },
   scrollContent: { paddingBottom: 100 },
   heroSection: { height: 240, position: 'relative' },
   heroImage: { width: '100%', height: '100%', resizeMode: 'cover' },

@@ -10,14 +10,15 @@ import {
   Image
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { Colors, Fonts } from '../../constants/theme';
-import { router } from 'expo-router';
-import { IconSymbol } from '../../components/ui/icon-symbol';
 
-export default function OTPScreen() {
+export default function OtpScreen() {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const inputs = useRef<Array<TextInput | null>>([]);
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   const handleOtpChange = (text: string, index: number) => {
     const newOtp = [...otp];
@@ -44,7 +45,7 @@ export default function OTPScreen() {
         <View style={styles.header}>
           <TouchableOpacity 
             style={styles.backButton}
-            onPress={() => router.back()}
+            onPress={() => navigation.goBack()}
           >
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
@@ -84,7 +85,7 @@ export default function OTPScreen() {
 
             <TouchableOpacity 
               style={styles.verifyButton}
-              onPress={() => router.replace('/(tabs)')}
+              onPress={() => navigation.replace('MainTabs')}
             >
               <Text style={styles.verifyText}>Verify and Proceed</Text>
             </TouchableOpacity>

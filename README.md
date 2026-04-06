@@ -1,6 +1,6 @@
 # BR-Fresh 🌿
 
-BR-Fresh is a premium React Native mobile application built with **Expo (SDK 54)** and **Expo Router**. It's a harvest-inspired grocery and fresh produce delivery platform designed with a high-end aesthetic and seamless user experience.
+BR-Fresh is a premium React Native mobile application built with the **React Native CLI (Bare Workflow)**. It's a harvest-inspired grocery and fresh produce delivery platform designed with a high-end aesthetic and seamless user experience.
 
 ---
 
@@ -21,17 +21,19 @@ BR-Fresh is a premium React Native mobile application built with **Expo (SDK 54)
 - **Store Discovery:** Detailed store pages with category filters and product listing.
 - **Product Details:** Immersive product views with specs, quantity controls, and related items.
 - **Cart & Review:** Full checkout flow with shipment summary, coupon application, and home delivery selection.
+- **Payment:** Integrated payment interface for secure transactions.
 
 ### 📍 Logistics
 - **Live Tracking:** Real-time order progress with status milestones and delivery partner info.
-- **Native UI:** Optimized for modern edge-to-edge displays (iOS & Android) with custom system navigation area styling.
+- **Native UI:** Optimized for modern edge-to-edge displays (Android & iOS) with custom system navigation area styling.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Framework:** [Expo SDK 54](https://expo.dev/)
-- **Navigation:** [Expo Router](https://docs.expo.dev/router/introduction/) (File-based routing)
+- **Framework:** [React Native 0.81.5](https://reactnative.dev/)
+- **Navigation:** [React Navigation 7](https://reactnavigation.org/) (Stack & Bottom Tabs)
+- **Animations:** [React Native Reanimated V4](https://docs.swmansion.com/react-native-reanimated/)
 - **Icons:** Material Symbol Icons (Custom `IconSymbol` component)
 - **Styling:** Vanilla `StyleSheet` with centralized design tokens.
 - **Safe Areas:** `react-native-safe-area-context` for notch and gesture bar handling.
@@ -42,17 +44,17 @@ BR-Fresh is a premium React Native mobile application built with **Expo (SDK 54)
 
 ```text
 BR-Fresh/
-├── app/                  # Expo Router - File-based navigation
-│   ├── (auth)/           # Authentication flow (Login, OTP)
-│   ├── (tabs)/           # Main application tabs
-│   ├── product/          # Product detail dynamic routes
-│   ├── store/            # Store detail dynamic routes
-│   └── _layout.tsx       # Root layout provider
-├── assets/               # Local images and fonts
+├── src/                  # Main application source
+│   ├── navigation/       # Stack and Tab navigators
+│   ├── screens/          # All application screens
+│   └── App.tsx           # Application entry point
 ├── components/           # Reusable UI components
 ├── constants/            # Design system (Theme, Colors, Typography)
+├── context/              # React Context providers (Cart, etc.)
 ├── hooks/                # Custom React hooks
-└── app.json              # Expo configuration
+├── assets/               # Local images and fonts
+├── android/              # Android native project files
+└── index.js              # Root entry point for React Native
 ```
 
 ---
@@ -63,7 +65,8 @@ BR-Fresh/
 
 - [Node.js](https://nodejs.org/) (LTS recommended)
 - [Git](https://git-scm.com/)
-- [Expo Go](https://expo.dev/expo-go) app installed on your physical device.
+- [Android Studio & SDK](https://developer.android.com/studio) (for Android development)
+- [CocoaPods](https://cocoapods.org/) (for iOS development on macOS)
 
 ### Setup Instructions
 
@@ -78,15 +81,21 @@ BR-Fresh/
    npm install
    ```
 
-3. **Start the development server:**
+3. **Start the Metro Bundler:**
    ```bash
-   npx expo start
+   npx react-native start
    ```
 
 4. **Launch the app:**
-   - **On Android:** Scan the QR code using the **Expo Go** app.
-   - **On iOS:** Scan the QR code using the **Camera** app.
-   - **In Terminal:** Press `a` for Android emulator or `i` for iOS simulator.
+   - **On Android:**
+     ```bash
+     npm run dev
+     ```
+     *(This will run `adb reverse` and `react-native run-android`)*
+   - **On iOS (macOS only):**
+     ```bash
+     npx react-native run-ios
+     ```
 
 ---
 
@@ -101,10 +110,23 @@ The application uses a custom design system located in `constants/theme.ts`. It 
 
 ## 📝 Troubleshooting
 
-If you encounter path resolution errors or UI overlap after a major update, clear the bundler cache:
-```bash
-npx expo start -c
-```
+If you encounter issues during development:
+
+- **Reset Metro Cache:**
+  ```bash
+  npx react-native start --reset-cache
+  ```
+
+- **ADB Reverse (for Android):**
+  If the app cannot connect to the development server, run:
+  ```bash
+  adb reverse tcp:8081 tcp:8081
+  ```
+
+- **Clean Android Build:**
+  ```bash
+  cd android && ./gradlew clean && cd ..
+  ```
 
 ---
 
